@@ -3,3 +3,59 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+#left {
+  float: left;
+  font-style: italic;
+  width: 40%;
+  margin-left: 5%;
+}
+
+#right {
+  float: right;
+  width: 40%;
+  margin-right: 5%;
+  text-align: left;
+  /* background: #f4f4f4; */
+}
+
+#searchUTube {
+  margin-top: 25px;
+}
+
+.inputDiv {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.block {
+  margin-top: 10px;
+}
+
+.inputDiv input {
+  width: 97%;
+}
+
+#results {
+  border-top-width: thick;
+  border-top-color: #f4f4f4;
+}
+
+.thumb {
+  max-width: 30%;
+  float: left;
+}
+
+.info {
+  max-width: 30%;
+  float: left;
+  margin-left: 2%;
+}
+
+.divider {
+  clear: both;
+}
+
+.individualResult {
+  margin-bottom: 25px;
+}

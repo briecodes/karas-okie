@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UUID from 'uuid';
 
 import Form from './Components/form';
 import UTubeForm from './Components/uTubeForm';
@@ -48,17 +49,24 @@ export default class Container extends Component {
         e.target.reset();
     };
 
-    searchYouTube = () => {
+    youTubeSearchCallback = (err, results) => {
         let arr = []
-        search(this.state.searchTerm, opts, function(err, results) {
-            if(err) return console.log(err);
-            results.forEach(item =>{
-                arr.push(item);
-            });
+        if(err) return console.log(err);
+        results.forEach(item =>{
+            arr.push(item);
         });
         this.setState({
             videos: arr
-        }, () => this.renderResults());
+        });
+        // this.setState({
+        //     videos: arr
+        // }, () => this.renderResults());
+    }
+
+    searchYouTube = () => {
+        let please = search(this.state.searchTerm, opts, this.youTubeSearchCallback)
+        console.log(please)
+        
     };
 
     typeSet = (e) => {
@@ -68,16 +76,14 @@ export default class Container extends Component {
     };
 
     renderResults = () => {
-        console.log("inside render results, videos", this.state.videos.length);
         let arr = this.state.videos.map(item => {
-            return <TubeResult videoInfo={item} />
+            return <TubeResult videoInfo={item} key={UUID()} />
         });
-        console.log("exiting renderResults Arr:", arr);
+        return arr
     };
 
   render() {
-    // console.log("render state.videos:", this.state.videos.length);
-    // const searchResults = this.renderResults();
+    const searchResults = this.renderResults();
     return (
       <div id="container">
           <h1>Kara's Okie</h1>
@@ -94,8 +100,8 @@ export default class Container extends Component {
             <div id="searchUTube">
                 < UTubeForm name="searchTerm" onSubmit={this.searchSubmit} onChangeHandler={this.typeSet} />
             </div>
-            <div id="results">
-                {/* {searchResults} */}
+            <div id="results">Results:
+                {searchResults}
             </div>
           </div>
       </div>

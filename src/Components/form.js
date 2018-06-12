@@ -6,18 +6,26 @@ export default class Form extends Component {
     render() {
         return (
             <form onSubmit={this.props.onSubmit} >
-                <label>Name: 
-                    < TextInput name={"name"} />
-                </label>
-                <label>Artist Name: 
-                    < TextInput name={"artistName"} />
+                <div className="block">
+                    <label>Name: 
+                        < TextInput name={"name"} />
                     </label>
-                <label>Song Title: 
-                    < TextInput name={"songTitle"} />
-                </label>
-                <label>URL: 
-                    < TextInput name={"url"} />
-                </label>
+                </div>
+                <div className="block">
+                    <label>Artist Name: 
+                        < TextInput name={"artistName"} />
+                    </label>
+                </div>
+                <div className="block">
+                    <label>Song Title: 
+                        < TextInput name={"songTitle"} />
+                    </label>
+                </div>
+                <div className="block">
+                    <label>URL: 
+                        < TextInput name={"url"} />
+                    </label>
+                </div>
                 <input type="submit"/>
             </form>
         );
