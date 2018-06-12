@@ -23,11 +23,17 @@ export default class Container extends Component {
             url: ''
         },
         videos: [],
-        searchTerm: ''
+        searchTerm: '',
+        karaokeList: []
     }
-
-    doneDid = () => {
-        console.log("You done did somefin");
+    
+    componenetWillMount () {
+    	// LOAD JSON API
+    }
+    
+    persistUser = () => {
+    	//FETCH(URL) HERE. CONSULT WITH JOE. TEST METHOD.
+    	{this.state.user}
     }
 
     onSubmit = (e) => {
@@ -58,9 +64,6 @@ export default class Container extends Component {
         this.setState({
             videos: arr
         });
-        // this.setState({
-        //     videos: arr
-        // }, () => this.renderResults());
     }
 
     searchYouTube = () => {
@@ -75,19 +78,38 @@ export default class Container extends Component {
         });
     };
 
-    renderResults = () => {
+    renderVideoSearchResults = () => {
         let arr = this.state.videos.map(item => {
-            return <TubeResult videoInfo={item} key={UUID()} />
+            return <TubeResult videoInfo={item} key={UUID()} clickHandler={this.selectVideo} />
         });
         return arr
     };
+    
+    renderKaraokeList = () => {
+    // TEST METHOD
+    	let arr = this.state.karaokeList.map(person => {
+    		return <Person person={person} key={UUID()} />
+    	});
+    }
+    
+    selectVideo = (e) => {
+    	console.log(e.target.value);
+    	// TEST METHOD. REVIEW OBJECT INSERTION.
+    //	this.setState({
+    //	user: {
+    //			url: e.target.value
+   // 		}
+    //	});
+    }
 
   render() {
-    const searchResults = this.renderResults();
+    const searchResults = this.renderVideoSearchResults();
+    const karaokeList = this.renderKaraokeList();
     return (
       <div id="container">
           <h1>Kara's Okie</h1>
           <div id="left">
+          	{karaokeList}
             {this.state.user.name}
             {this.state.user.artistName}
             {this.state.user.songTitle}

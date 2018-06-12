@@ -7,7 +7,7 @@ const TubeResult = (props) => (
             {props.videoInfo.title}
         </div>
         <div className="info">
-            <button type="button" value={props.videoInfo.link} >Choose Video</button>
+            <button type="button" value={props.videoInfo.link} onClick={props.clickHandler} >Choose Video</button>
         </div>
         <div className="divider"></div>
     </div>
