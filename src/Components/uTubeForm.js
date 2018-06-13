@@ -7,9 +7,9 @@ export default class uTubeForm extends Component {
         return (
             <form onSubmit={this.props.onSubmit} >
                 <label>Search YouTube: 
-                    < TextInput name={this.props.name} onChangeHandler={this.props.onChangeHandler} />
+                    < TextInput value={this.props.value} name={this.props.name} onChangeHandler={this.props.onChangeHandler} />
                 </label>
-                <input type="submit"/>
+                {this.props.value ? <input type="submit"/> : null }
             </form>
         );
     };

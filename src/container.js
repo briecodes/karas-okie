@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UUID from 'uuid';
 
 import API_KEY from './token';
-import Form from './Components/form';
+import SubmitForm from './Components/form';
 import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
@@ -21,19 +21,28 @@ export default class Container extends Component {
             name: '',
             artistName: '',
             songTitle: '',
-            url: ''
+            url: '',
+            videoId: ''
         },
         hideUrlInput: false,
         searchTerm: '',
         videos: [],
-        // karaokeList: []
-        // videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }],
-        karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
+        karaokeList: []
+    }
+
+    componentDidMount(){
+        this.getKaraokeList();
     }
     
     estimatedTime = () => {
         return this.state.karaokeList.length * 4;
     }
+
+
+    
+
+    
+    // USER ACTIONS
 
     submitKaraokeEntry = (e) => {
         e.preventDefault();
@@ -55,40 +64,11 @@ export default class Container extends Component {
                 name: '',
                 artistName: '',
                 songTitle: '',
-                url: ''
+                url: '',
+                videoId: ''
             }
         });
     }
-
-    searchSubmit = (e) => {
-        e.preventDefault();
-        this.searchYouTube();
-        e.target.reset();
-    };
-
-    youTubeSearchCallback = (err, results) => {
-        let arr = []
-        if(err) return console.log(err);
-        results.forEach(item =>{
-            arr.push(item);
-        });
-        this.setState({
-            videos: arr
-        });
-    }
-
-    searchYouTube = () => {
-        search(this.state.searchTerm, opts, this.youTubeSearchCallback)
-    };
-
-    selectVideo = (e) => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                url: e.target.value
-            }
-        });
-    };
 
     resetUrlInput = () => {
         this.setState({
@@ -138,8 +118,46 @@ export default class Container extends Component {
         };
     };
 
+    searchSubmit = (e) => {
+        e.preventDefault();
+        this.searchYouTube();
+        e.target.reset();
+    };
 
-    pullKaraokeList = () => {
+    selectVideo = (e) => {
+        this.setState({
+            user: {
+                ...this.state.user,
+                url: e.target.value,
+                videoId: e.target.dataset.videoid
+            }
+        });
+    };
+
+
+
+
+
+
+
+
+    // CRUD ACTIONS
+    searchYouTube = () => {
+        search(this.state.searchTerm, opts, this.youTubeSearchCallback)
+    };
+
+    youTubeSearchCallback = (err, results) => {
+        let arr = []
+        if(err) return console.log(err);
+        results.forEach(item =>{
+            arr.push(item);
+        });
+        this.setState({
+            videos: arr
+        });
+    };
+
+    getKaraokeList = () => {
         fetch('http://localhost:3000/api/v1/users').then( response => response.json() ).then(array => {
             this.setState({
                 karaokeList: array
@@ -164,10 +182,6 @@ export default class Container extends Component {
         .then( res => res.json() )
         .then( response => console.log('success:', response ));
         e.target.parentNode.remove()
-    }
-
-    componentDidMount(){
-        this.pullKaraokeList();
     }
 
     
@@ -196,25 +210,27 @@ export default class Container extends Component {
     const karaokeList = this.renderKaraokeList();
     const estimatedTime = this.estimatedTime();
     return (
-      <div id="container">
+      <div id='container'>
         <h1 className='title'>Kara's Okie</h1>
         <div>Estimated Wait Time: {estimatedTime}</div>
         <p></p>
         <p></p>
-        <div id="left">
+        <div id='left'>
         <h4>Upcoming Performers:</h4>
             {karaokeList}
         </div>
         
-        <div id="right">
+        <div id='right'>
             <h4>Submit a Song:</h4>
-                <Form onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} resetUrlInput={this.resetUrlInput} hide={this.state.hideUrlInput} />
-            <div id="searchUTube">
-                < UTubeForm name="searchTerm" onSubmit={this.searchSubmit} onChangeHandler={this.logSearchFieldKeystrokes} />
+                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} resetUrlInput={this.resetUrlInput} hide={this.state.hideUrlInput} />
+            <div id='searchUTube'>
+                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.searchSubmit} onChangeHandler={this.logSearchFieldKeystrokes} />
             </div>
-            <div id="results">
+            <div id='results'>
                 {this.state.videos.length > 0 ? 'Results:' : null }
                 {searchResults}
+                {/* <iframe id='player' type='text/html' width='640' height='390'
+                src={`http://www.youtube.com/embed/${this.state.user.videoId}`} frameborder='0'></iframe> */}
             </div>
         </div>
       </div>

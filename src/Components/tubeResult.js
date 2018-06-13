@@ -7,7 +7,7 @@ const TubeResult = (props) => (
             {props.videoInfo.title.substring(0, 38)}
         </div>
         <div className="buttonContainer">
-            <button type="button" value={props.videoInfo.link} onClick={props.clickHandler} >Choose Video</button>
+            <button type="button" data-videoid={props.videoInfo.id} value={props.videoInfo.link} onClick={props.clickHandler} >Choose Video</button>
         </div>
         <div className="divider"></div>
     </div>
