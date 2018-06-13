@@ -6,7 +6,7 @@ import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 
-const API = 'AIzaSyDazwSRgrtSRSU-Q6ZWXumrDtg_VFPfX90';
+const API = '';
 let search = require('youtube-search');
 let opts = {
     maxResults: 10,
