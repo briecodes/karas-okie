@@ -87,3 +87,7 @@ body {
 #searchUTube {
   width: 50%;
 }
+
+.asterisk {
+  color: red;
+}

@@ -10,23 +10,23 @@ export default class Form extends Component {
         return (
             <form onSubmit={this.props.onSubmit} >
                 <div className="block">
-                    <label>Name: 
+                    <label>Name:<span className="asterisk">*</span>
                         < TextInput name={"name"} value={this.props.user.name} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <div className="block">
-                    <label>Artist Name: 
+                    <label>Artist Name:<span className="asterisk">*</span>
                         < TextInput name={"artistName"} value={this.props.user.artistName} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <div className="block">
-                    <label>Song Title: 
+                    <label>Song Title:<span className="asterisk">*</span>
                         < TextInput name={"songTitle"} value={this.props.user.songTitle} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <div className="block">
-                    <label>URL (Not Required):
-                        {this.props.hide ? <p>{this.props.user.url} &nbsp;&nbsp; <input type="button" value="Remove" onClick={this.props.resetUrlInput} /></p> : < TextInput name={"url"} placeholder={this.props.user.url} value={this.props.user.url} onChangeHandler={this.props.onChangeHandler} /> }
+                    <label>URL:
+                        < TextInput name={"url"} placeholder={this.props.user.url} value={this.props.user.url} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <input type="submit"/>

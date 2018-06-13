@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
 
+import API_KEY from './token';
 import Form from './Components/form';
 import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 
-const API = '';
 let search = require('youtube-search');
 let opts = {
     maxResults: 10,
-    key: API,
+    key: API_KEY,
     type: 'videos'
   };
 
@@ -25,10 +25,10 @@ export default class Container extends Component {
         },
         hideUrlInput: false,
         searchTerm: '',
-        videos: [],
-        karaokeList: []
-        // videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }],
-        // karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
+        // videos: [],
+        // karaokeList: []
+        videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }],
+        karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
     }
     
     estimatedTime = () => {
@@ -37,7 +37,7 @@ export default class Container extends Component {
 
     submitKaraokeEntry = (e) => {
         e.preventDefault();
-        if (this.state.user.name && this.state.user.url){
+        if (this.state.user.name && this.state.user.url && this.state.user.artistName){
             this.setState({
                 karaokeList: [...this.state.karaokeList, this.state.user]
             })
@@ -48,7 +48,6 @@ export default class Container extends Component {
 
     resetAppState = () => {
         this.setState({
-            hideUrlInput: false,
             searchTerm: '',
             videos: [],
             user: {
@@ -83,7 +82,6 @@ export default class Container extends Component {
 
     selectVideo = (e) => {
         this.setState({
-            hideUrlInput: true,
             user: {
                 ...this.state.user,
                 url: e.target.value
@@ -161,6 +159,7 @@ export default class Container extends Component {
     }
 
   render() {
+      console.log(API_KEY);
     const searchResults = this.renderVideoSearchResults();
     const karaokeList = this.renderKaraokeList();
     const estimatedTime = this.estimatedTime();
