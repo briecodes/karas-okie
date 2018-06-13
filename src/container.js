@@ -25,8 +25,10 @@ export default class Container extends Component {
         },
         hideUrlInput: false,
         searchTerm: '',
-        videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }],
-        karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
+        videos: [],
+        karaokeList: []
+        // videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }],
+        // karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
     }
     
     estimatedTime = () => {
@@ -35,16 +37,20 @@ export default class Container extends Component {
 
     submitKaraokeEntry = (e) => {
         e.preventDefault();
-        this.setState({
-            karaokeList: [...this.state.karaokeList, this.state.user]
-        })
-        e.target.reset();
-        this.resetUserState();
+        if (this.state.user.name && this.state.user.url){
+            this.setState({
+                karaokeList: [...this.state.karaokeList, this.state.user]
+            })
+            e.target.reset();
+            this.resetAppState();
+        }
     };
 
-    resetUserState = () => {
+    resetAppState = () => {
         this.setState({
             hideUrlInput: false,
+            searchTerm: '',
+            videos: [],
             user: {
                 name: '',
                 artistName: '',
@@ -77,10 +83,20 @@ export default class Container extends Component {
 
     selectVideo = (e) => {
         this.setState({
-            hideUrlInput: !this.state.hideUrlInput,
+            hideUrlInput: true,
             user: {
                 ...this.state.user,
                 url: e.target.value
+            }
+        });
+    };
+
+    resetUrlInput = () => {
+        this.setState({
+            hideUrlInput: false,
+            user: {
+                ...this.state.user,
+                url: ''
             }
         });
     };
@@ -161,11 +177,12 @@ export default class Container extends Component {
         
         <div id="right">
             <h4>Submit a Song:</h4>
-                <Form onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} hide={this.state.hideUrlInput} />
+                <Form onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} resetUrlInput={this.resetUrlInput} hide={this.state.hideUrlInput} />
             <div id="searchUTube">
                 < UTubeForm name="searchTerm" onSubmit={this.searchSubmit} onChangeHandler={this.logSearchFieldKeystrokes} />
             </div>
-            <div id="results">Results:
+            <div id="results">
+                {this.state.videos.length > 0 ? 'Results:' : null }
                 {searchResults}
             </div>
         </div>
