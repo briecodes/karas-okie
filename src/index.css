@@ -4,11 +4,27 @@ body {
   padding: 0;
   font-size: 1em;
   line-height: 1.5em;
+  color: #333;
+  background-image: url('./assets/bg_v4.jpg');
+  background-repeat: repeat;
 }
 
 .title {
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 3.5em;
+  font-family: 'Pacifico', cursive;
+  color: #FF00FF;
+  margin-bottom: 3%;
+}
+
+a, a:visited {
+  color: #666;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: purple;
 }
 
 #left {
@@ -90,4 +106,17 @@ body {
 
 .asterisk {
   color: red;
+}
+
+@media only screen 
+and (min-device-width : 100px) 
+and (max-device-width : 520px) {
+    body {
+      background: fuchsia;
+    }
+}
+
+@media only screen 
+and (min-device-width : 521px) {
+    /* Styles */
 }

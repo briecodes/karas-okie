@@ -25,9 +25,9 @@ export default class Container extends Component {
         },
         hideUrlInput: false,
         searchTerm: '',
-        // videos: [],
+        videos: [],
         // karaokeList: []
-        videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }],
+        // videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CP2phNkF&rs=AOn4CLDQIyEQNd8IyKxCqUQIBdX71cvOpQ' } } }],
         karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
     }
     
@@ -40,10 +40,11 @@ export default class Container extends Component {
         if (this.state.user.name && this.state.user.url && this.state.user.artistName){
             this.setState({
                 karaokeList: [...this.state.karaokeList, this.state.user]
-            })
+            });
+            this.postPerformer();
             e.target.reset();
             this.resetAppState();
-        }
+        };
     };
 
     resetAppState = () => {
@@ -137,6 +138,38 @@ export default class Container extends Component {
         };
     };
 
+
+    pullKaraokeList = () => {
+        fetch('http://localhost:3000/api/v1/users').then( response => response.json() ).then(array => {
+            this.setState({
+                karaokeList: array
+            });
+        });
+    };
+
+    postPerformer = () => {
+        fetch('http://localhost:3000/api/v1/users', {
+            method: 'POST',
+            body: JSON.stringify(this.state.user),
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then( res => res.json() )
+        .then( response => console.log('success:', response ));
+    };
+
+    deletePerformer = (e) => {
+        fetch('http://localhost:3000/api/v1/users/' + e.target.value, {
+            method: 'DELETE'
+        })
+        .then( res => res.json() )
+        .then( response => console.log('success:', response ));
+        e.target.parentNode.remove()
+    }
+
+    componentDidMount(){
+        this.pullKaraokeList();
+    }
+
     
     
     
@@ -153,13 +186,12 @@ export default class Container extends Component {
     renderKaraokeList = () => {
     	let arr = this.state.karaokeList.map((person, index) => {
             const estTime = index * 4
-            return <Person person={person} position={index !== 0 ? 'in: ' + estTime + 'mins' : 'Currently Up'} key={UUID()} />
+            return <Person person={person} position={index !== 0 ? 'in: ' + estTime + 'mins' : 'Currently Up'} key={UUID()} clickHanlder={this.deletePerformer} />
         });
         return arr;
     }
 
   render() {
-      console.log(API_KEY);
     const searchResults = this.renderVideoSearchResults();
     const karaokeList = this.renderKaraokeList();
     const estimatedTime = this.estimatedTime();
