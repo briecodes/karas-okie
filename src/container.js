@@ -4,8 +4,9 @@ import UUID from 'uuid';
 import Form from './Components/form';
 import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
+import Person from './Components/person';
 
-const API = '';
+const API = 'AIzaSyDazwSRgrtSRSU-Q6ZWXumrDtg_VFPfX90';
 let search = require('youtube-search');
 let opts = {
     maxResults: 10,
@@ -22,32 +23,36 @@ export default class Container extends Component {
             songTitle: '',
             url: ''
         },
-        videos: [],
+        hideUrlInput: false,
         searchTerm: '',
-        karaokeList: []
+        videos: [{ title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }, { title: 'The Last Shadow Puppets', link: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg', thumbnails: { default: { url: 'https://i.ytimg.com/an_webp/Fd1Xc6-6VVg/mqdefault_6s.webp?du=3000&sqp=CJaggdkF&rs=AOn4CLBtTnNzfEXA44KXPQCVo8i1FhUSow' } } }],
+        karaokeList: [{ name: 'Tom', artistName: 'The Last Shadow Puppets', songTitle: 'Aviation', url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg' }, { name: 'Johnny Jones', artistName: 'Janelle Monae', songTitle: 'Crazy, Classic Life', url: 'https://www.youtube.com/watch?v=s69xpMzuFmA' }]
     }
     
-    componenetWillMount () {
-    	// LOAD JSON API
-    }
-    
-    persistUser = () => {
-    	//FETCH(URL) HERE. CONSULT WITH JOE. TEST METHOD.
-    	{this.state.user}
+    estimatedTime = () => {
+        return this.state.karaokeList.length * 4;
     }
 
-    onSubmit = (e) => {
+    submitKaraokeEntry = (e) => {
         e.preventDefault();
         this.setState({
+            karaokeList: [...this.state.karaokeList, this.state.user]
+        })
+        e.target.reset();
+        this.resetUserState();
+    };
+
+    resetUserState = () => {
+        this.setState({
+            hideUrlInput: false,
             user: {
-                name: e.target.name.value,
-                artistName: e.target.artistName.value,
-                songTitle: e.target.songTitle.value,
-                url: e.target.url.value
+                name: '',
+                artistName: '',
+                songTitle: '',
+                url: ''
             }
         });
-        e.target.reset();
-    };
+    }
 
     searchSubmit = (e) => {
         e.preventDefault();
@@ -67,16 +72,62 @@ export default class Container extends Component {
     }
 
     searchYouTube = () => {
-        let please = search(this.state.searchTerm, opts, this.youTubeSearchCallback)
-        console.log(please)
-        
+        search(this.state.searchTerm, opts, this.youTubeSearchCallback)
     };
 
-    typeSet = (e) => {
+    selectVideo = (e) => {
+        this.setState({
+            hideUrlInput: !this.state.hideUrlInput,
+            user: {
+                ...this.state.user,
+                url: e.target.value
+            }
+        });
+    };
+
+    logSearchFieldKeystrokes = (e) => {
         this.setState({
             searchTerm: e.target.value
         });
     };
+
+    logFieldKeystrokes = (e) => {
+        if (e.target.name === 'name'){
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    name: e.target.value
+                }
+            });
+        }else if (e.target.name === 'artistName'){
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    artistName: e.target.value
+                }
+            });
+        }else if (e.target.name === 'songTitle'){
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    songTitle: e.target.value
+                }
+            });
+        }else if (e.target.name === 'url'){
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    url: e.target.value
+                }
+            });
+        };
+    };
+
+    
+    
+    
+    
+    // RENDER METHODS
 
     renderVideoSearchResults = () => {
         let arr = this.state.videos.map(item => {
@@ -86,46 +137,38 @@ export default class Container extends Component {
     };
     
     renderKaraokeList = () => {
-    // TEST METHOD
-    	let arr = this.state.karaokeList.map(person => {
-    		return <Person person={person} key={UUID()} />
-    	});
-    }
-    
-    selectVideo = (e) => {
-    	console.log(e.target.value);
-    	// TEST METHOD. REVIEW OBJECT INSERTION.
-    //	this.setState({
-    //	user: {
-    //			url: e.target.value
-   // 		}
-    //	});
+    	let arr = this.state.karaokeList.map((person, index) => {
+            const estTime = index * 4
+            return <Person person={person} position={index !== 0 ? 'in: ' + estTime + 'mins' : 'Currently Up'} key={UUID()} />
+        });
+        return arr;
     }
 
   render() {
     const searchResults = this.renderVideoSearchResults();
     const karaokeList = this.renderKaraokeList();
+    const estimatedTime = this.estimatedTime();
     return (
       <div id="container">
-          <h1>Kara's Okie</h1>
-          <div id="left">
-          	{karaokeList}
-            {this.state.user.name}
-            {this.state.user.artistName}
-            {this.state.user.songTitle}
-            {this.state.user.url}
-            {this.state.searchTerm}
-          </div>
-          
-          <div id="right">
-            <Form onSubmit={this.onSubmit} />
+        <h1 className='title'>Kara's Okie</h1>
+        <div>Estimated Wait Time: {estimatedTime}</div>
+        <p></p>
+        <p></p>
+        <div id="left">
+        <h4>Upcoming Performers:</h4>
+            {karaokeList}
+        </div>
+        
+        <div id="right">
+            <h4>Submit a Song:</h4>
+                <Form onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} hide={this.state.hideUrlInput} />
             <div id="searchUTube">
-                < UTubeForm name="searchTerm" onSubmit={this.searchSubmit} onChangeHandler={this.typeSet} />
+                < UTubeForm name="searchTerm" onSubmit={this.searchSubmit} onChangeHandler={this.logSearchFieldKeystrokes} />
             </div>
             <div id="results">Results:
                 {searchResults}
             </div>
-          </div>
+        </div>
       </div>
     );
   };

@@ -1,14 +1,21 @@
 body {
+  font-family: 'Saira Condensed', sans-serif;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 3.5em;
 }
 
 #left {
   float: left;
-  font-style: italic;
   width: 40%;
   margin-left: 5%;
+  text-align: left;
 }
 
 #right {
@@ -37,6 +44,7 @@ body {
 }
 
 #results {
+  margin-top: 25px;
   border-top-width: thick;
   border-top-color: #f4f4f4;
 }
@@ -46,10 +54,16 @@ body {
   float: left;
 }
 
-.info {
-  max-width: 30%;
+.titleContainer {
+  max-width: 50%;
   float: left;
   margin-left: 2%;
+  margin-right: 7%;
+}
+
+.buttonContainer {
+  max-width: 10%;
+  float: left;
 }
 
 .divider {
@@ -57,5 +71,19 @@ body {
 }
 
 .individualResult {
-  margin-bottom: 25px;
+  margin-bottom: 8%;
+  line-height: 1.25em;
+}
+
+.personDiv {
+  margin-bottom: 5%;
+}
+
+.personName {
+  font-size: 2em;
+  margin-right: 2%;
+}
+
+#searchUTube {
+  width: 50%;
 }

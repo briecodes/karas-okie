@@ -8,22 +8,22 @@ export default class Form extends Component {
             <form onSubmit={this.props.onSubmit} >
                 <div className="block">
                     <label>Name: 
-                        < TextInput name={"name"} />
+                        < TextInput name={"name"} value={this.props.user.name} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <div className="block">
                     <label>Artist Name: 
-                        < TextInput name={"artistName"} />
+                        < TextInput name={"artistName"} value={this.props.user.artistName} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <div className="block">
                     <label>Song Title: 
-                        < TextInput name={"songTitle"} />
+                        < TextInput name={"songTitle"} value={this.props.user.songTitle} onChangeHandler={this.props.onChangeHandler} />
                     </label>
                 </div>
                 <div className="block">
-                    <label>URL: 
-                        < TextInput name={"url"} />
+                    <label>URL (Not Required):
+                        {this.props.hide ? <p>{this.props.user.url}</p> : < TextInput name={"url"} placeholder={this.props.user.url} value={this.props.user.url} onChangeHandler={this.props.onChangeHandler} /> }
                     </label>
                 </div>
                 <input type="submit"/>

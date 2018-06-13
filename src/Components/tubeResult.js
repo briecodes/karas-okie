@@ -3,10 +3,10 @@ import React from 'react';
 const TubeResult = (props) => (
     <div className="individualResult">
         <img src={props.videoInfo.thumbnails.default.url} alt="props.videoInfo.title" className="thumb" />
-        <div className="info">
-            {props.videoInfo.title}
+        <div className="titleContainer">
+            {props.videoInfo.title.substring(0, 38)}
         </div>
-        <div className="info">
+        <div className="buttonContainer">
             <button type="button" value={props.videoInfo.link} onClick={props.clickHandler} >Choose Video</button>
         </div>
         <div className="divider"></div>
