@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UUID from 'uuid';
 
-import API_KEY from './token';
+import API_KEY from './token2';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 import Performer from './Components/performer';
