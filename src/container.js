@@ -226,8 +226,6 @@ export default class Container extends Component {
             <div id='results'>
                 {this.state.videos.length > 0 ? 'Results:' : null }
                 {searchResults}
-                {/* <iframe id='player' type='text/html' width='640' height='390'
-                src={`http://www.youtube.com/embed/${this.state.user.videoId}`} frameborder='0'></iframe> */}
             </div>
         </div>
       </div>
