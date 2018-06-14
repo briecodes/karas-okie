@@ -28,7 +28,8 @@ export default class Container extends Component {
         },
         searchTerm: '',
         videos: [],
-        karaokeList: []
+        karaokeList: [],
+        adminMode: false;
     };
 
 
