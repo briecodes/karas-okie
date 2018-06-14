@@ -31,8 +31,12 @@ export default class Container extends Component {
         karaokeList: []
     }
 
+    
+
+    // DEFAULT APP / LIFECYCLE FUNCTIONS
+
     componentDidMount(){
-        this.getKaraokeList();
+        this.fetchPerformerList();
     }
     
     estimatedTime = () => {
@@ -53,7 +57,6 @@ export default class Container extends Component {
             });
             this.postPerformer();
             e.target.reset();
-            // this.resetAppState();
         };
     };
 
@@ -70,21 +73,6 @@ export default class Container extends Component {
             }
         });
     }
-
-    resetUrlInput = () => {
-        this.setState({
-            user: {
-                ...this.state.user,
-                url: ''
-            }
-        });
-    };
-
-    logSearchFieldKeystrokes = (e) => {
-        this.setState({
-            searchTerm: e.target.value
-        });
-    };
 
     logFieldKeystrokes = (e) => {
         if (e.target.name === 'name'){
@@ -114,6 +102,10 @@ export default class Container extends Component {
                     ...this.state.user,
                     url: e.target.value
                 }
+            });
+        }else if (e.target.name === 'searchTerm'){
+            this.setState({
+                searchTerm: e.target.value
             });
         };
     };
@@ -157,7 +149,7 @@ export default class Container extends Component {
         });
     };
 
-    getKaraokeList = () => {
+    fetchPerformerList = () => {
         fetch(API_URL).then( response => response.json() ).then(array => {
             this.setState({
                 karaokeList: array
@@ -200,8 +192,9 @@ export default class Container extends Component {
     
     renderKaraokeList = () => {
     	let arr = this.state.karaokeList.map((person, index) => {
-            const estTime = index * 4
-            return <Person person={person} position={index !== 0 ? 'in: ' + estTime + 'mins' : 'Currently Up'} key={UUID()} clickHanlder={this.deletePerformer} />
+            const estTime = index * 4;
+            const position = index !== 0 ? 'in: ' + estTime + 'mins' : 'Currently Up';
+            return <Person person={person} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
         });
         return arr;
     }
@@ -214,8 +207,10 @@ export default class Container extends Component {
       <div id='container'>
         <h1 className='title'>Kara's Okie</h1>
         <div>Estimated Wait Time: {estimatedTime}</div>
+        
         <p></p>
         <p></p>
+
         <div id='left'>
         <h4>Upcoming Performers:</h4>
             {karaokeList}
@@ -223,9 +218,9 @@ export default class Container extends Component {
         
         <div id='right'>
             <h4>Submit a Song:</h4>
-                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} resetUrlInput={this.resetUrlInput} />
+                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} onChangeHandler={this.logFieldKeystrokes} />
             <div id='searchUTube'>
-                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.searchSubmit} onChangeHandler={this.logSearchFieldKeystrokes} />
+                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.searchSubmit} onChangeHandler={this.logFieldKeystrokes} />
             </div>
             <div id='results'>
                 {this.state.videos.length > 0 ? 'Results:' : null }
