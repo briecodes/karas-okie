@@ -108,6 +108,67 @@ a:hover {
   color: red;
 }
 
+#actionContainer {
+  width: 98%;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+#upNextList {
+  width: 23%;
+  height: 390px;
+  max-height: 390px;
+  float: right;
+  position: relative;
+  /* background: #f4f4f4; */
+  overflow: auto;
+}
+
+#player {
+  /* 640/390 = 1.64 OR .6 */
+  width: 76%;
+  height: 390px;
+  float: left;
+  position: relative;
+}
+
+#currentPerformer {
+  text-align: left;
+  margin-bottom: 10%;
+  padding-bottom: 5%;
+  padding-top: 10%;
+  border-bottom: #FF00FF;
+  border-bottom-width: 2px;
+  border-bottom-style: dotted;
+  border-top: #FF00FF;
+  border-top-width: 2px;
+  border-top-style: dotted;
+}
+
+.performerDiv {
+  text-align: left;
+  margin-bottom: 10%;
+  font-size: .9em;
+  line-height: 1.5em;
+}
+
+.performerFuncContainer {
+  float: left;
+  width: 9%;
+  min-height: 40px;
+}
+
+.inlineFloatR {
+  float: right;
+  width: 85%;
+}
+
+.performerDiv button {
+  /* padding: 2px; */
+  display: block;
+  float: left;
+}
+
 @media only all 
 and (min-device-width : 100px) 
 and (max-device-width : 520px) {

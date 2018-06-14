@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import UUID from 'uuid';
 
 import API_KEY from './token';
-import SubmitForm from './Components/submitForm';
-import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
+import Performer from './Components/performer';
+import currentPerformer from './Components/currentPerformer';
+import UpcomingPerformersGuest from './Components/upcomingPerformersGuest';
+import SongSearch from './Components/songSearch';
+import AdminHeader from './Components/adminHeader'
+import CurrentPerformer from './Components/currentPerformer';
 
 const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
 
@@ -28,7 +32,8 @@ export default class Container extends Component {
         },
         searchTerm: '',
         videos: [],
-        karaokeList: []
+        karaokeList: [],
+        adminMode: false
     };
 
 
@@ -37,6 +42,7 @@ export default class Container extends Component {
 
     componentDidMount(){
         this.fetchPerformerList();
+        // const fetchInterval = window.setInterval(this.fetchPerformerList, 5000);
     };
     
     estimatedTime = () => {
@@ -151,6 +157,7 @@ export default class Container extends Component {
     };
 
     fetchPerformerList = () => {
+        console.log("fetching...");
         fetch(API_URL).then( response => response.json() ).then(array => {
             this.setState({
                 karaokeList: array
@@ -172,14 +179,28 @@ export default class Container extends Component {
     deletePerformer = (e) => {
         fetch(API_URL + '/' + e.target.value, {
             method: 'DELETE'
-        })
-        .then( res => res.json() )
-        .then( response => console.log('success:', response ));
-        e.target.parentNode.remove()
+        });
+        e.target.parentNode.remove();
     }
 
     
-    
+    ratio = () => {
+        const widthIs = (80/100) * window.innerWidth;
+        const aspectRatio = 640 / 390;
+        const height = widthIs / aspectRatio;
+        if (document.getElementById('player')){
+            console.log(document.getElementById('player'));
+            document.getElementById('player').style.width = height + 'px';
+        }
+    }
+
+    switchMode = () => {
+        this.setState({
+            adminMode: !this.state.adminMode
+        })
+    }
+
+
     
     
     // RENDER METHODS
@@ -200,34 +221,46 @@ export default class Container extends Component {
         return arr;
     };
 
+    renderPerformerList = () => {
+    	let arr = this.state.karaokeList.map((person, index) => {
+            if (index !== 0){
+                const estTime = index * 4;
+                const position = index !== 1 ? 'In: ' + estTime + 'mins' : 'Up Next';
+                return <Performer person={person} index={index} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
+            }
+        });
+        return arr;
+    };
+
+    currentPerformer = () => {
+        let arr = this.state.karaokeList.map((person, index) => {
+            if (index === 0){
+                return <CurrentPerformer person={person} position='1' key={UUID()} clickHanlder={this.deletePerformer} />
+            }
+        });
+        return arr;
+    }
+
   render() {
     const searchResults = this.renderVideoSearchResults();
     const karaokeList = this.renderKaraokeList();
+    const currentPerformer = this.currentPerformer();
+    const performerList = this.renderPerformerList();
     const estimatedTime = this.estimatedTime();
     return (
       <div id='container'>
-        <h1 className='title'>Kara's Okie</h1>
-        <div>Estimated Wait Time: {estimatedTime}</div>
-        
-        <p></p>
-        <p></p>
+        <h1 className='title' onClick={this.switchMode}>Kara's Okie</h1>
 
-        <div id='left'>
-        <h4>Upcoming Performers:</h4>
-            {karaokeList}
-        </div>
+        { this.state.adminMode ? <AdminHeader karaokeList={this.state.karaokeList} currentPerformer={currentPerformer} performerList={performerList} /> : null }
+
+        <div><p></p><p></p><p></p><p></p><p></p><p></p></div>
+        <div>Estimated Wait Time: {estimatedTime}</div>
+        <p></p>
+        <p></p>
         
-        <div id='right'>
-            <h4>Submit a Song:</h4>
-                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} onChangeHandler={this.logFieldKeystrokes} />
-            <div id='searchUTube'>
-                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.submitYouTubeSearch} onChangeHandler={this.logFieldKeystrokes} />
-            </div>
-            <div id='results'>
-                {this.state.videos.length > 0 ? 'Results:' : null }
-                {searchResults}
-            </div>
-        </div>
+        {this.state.adminMode ? null : <UpcomingPerformersGuest karaokeList={karaokeList} /> }
+        {this.state.adminMode ? null : <SongSearch videos={this.state.videos} searchResults={searchResults} submitKaraokeEntry={this.submitKaraokeEntry} user={this.state.user} logFieldKeystrokes={this.logFieldKeystrokes} searchTerm={this.state.searchTerm} submitYouTubeSearch={this.submitYouTubeSearch} logFieldKeystrokes={this.logFieldKeystrokes} /> }
+
       </div>
     );
   };
