@@ -115,14 +115,14 @@ a:hover {
 }
 
 #upNextList {
-  width: 18%;
+  width: 20%;
   float: right;
   position: relative;
-  background: fuchsia;
+  background: #f4f4f4;
 }
 
 #player {
-  /* 640/390 = 1.64 */
+  /* 640/390 = 1.64 OR .6 */
   width: 80%;
   height: 390px;
   float: left;

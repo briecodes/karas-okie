@@ -180,7 +180,15 @@ export default class Container extends Component {
     }
 
     
-    
+    ratio = () => {
+        const widthIs = (80/100) * window.innerWidth;
+        const aspectRatio = 640 / 390;
+        const height = widthIs / aspectRatio;
+        if (document.getElementById('player')){
+            console.log(document.getElementById('player'));
+            document.getElementById('player').style.width = height + 'px';
+        }
+    }
     
     
     // RENDER METHODS
@@ -201,9 +209,31 @@ export default class Container extends Component {
         return arr;
     };
 
+    renderPerformerList = () => {
+    	let arr = this.state.karaokeList.map((person, index) => {
+            if (index !== 0){
+                const estTime = index * 4;
+                const position = 'in: ' + estTime + 'mins';
+                return <Person person={person} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
+            }
+        });
+        return arr;
+    };
+
+    currentPerformer = () => {
+        let arr = this.state.karaokeList.map((person, index) => {
+            if (index === 0){
+                return <Person person={person} position='1' key={UUID()} clickHanlder={this.deletePerformer} />
+            }
+        });
+        return arr;
+    }
+
   render() {
     const searchResults = this.renderVideoSearchResults();
     const karaokeList = this.renderKaraokeList();
+    const currentPerformer = this.currentPerformer();
+    const performerList = this.renderPerformerList();
     const estimatedTime = this.estimatedTime();
     return (
       <div id='container'>
@@ -212,10 +242,13 @@ export default class Container extends Component {
         <div id='actionContainer'>
             {this.state.karaokeList.length > 0 ? (
                 <iframe id='player' type='text/html'
-                src={`http://www.youtube.com/embed/${this.state.karaokeList[0].videoId}`} frameborder='0'></iframe>
+                src={`http://www.youtube.com/embed/${this.state.karaokeList[0].videoId}`} frameBorder='0'></iframe>
             ) : null }
             <div id='upNextList'>
-                {karaokeList}
+                <div id='currentPerformer'>
+                    {currentPerformer}
+                </div>
+                {performerList}
             </div>
         </div>
 
