@@ -7,6 +7,8 @@ import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 import Performer from './Components/performer';
+import UpcomingPerformersGuest from './Components/upcomingPerformersGuest';
+import SongSearch from './Components/songSearch';
 
 const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
 
@@ -174,10 +176,8 @@ export default class Container extends Component {
     deletePerformer = (e) => {
         fetch(API_URL + '/' + e.target.value, {
             method: 'DELETE'
-        })
-        .then( res => res.json() )
-        .then( response => console.log('success:', response ));
-        e.target.parentNode.remove()
+        });
+        e.target.parentNode.remove();
     }
 
     
@@ -223,7 +223,7 @@ export default class Container extends Component {
             if (index !== 0){
                 const estTime = index * 4;
                 const position = index !== 1 ? 'In: ' + estTime + 'mins' : 'Up Next';
-                return <Performer person={person} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
+                return <Performer person={person} index={index} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
             }
         });
         return arr;
@@ -248,8 +248,6 @@ export default class Container extends Component {
       <div id='container'>
         <h1 className='title' onClick={this.switchMode}>Kara's Okie</h1>
 
-        { this.state.adminMode ? 'Admin Mode: ON' : 'Admin Mode: OFF'}
-
         { this.state.adminMode ? (
             <div id='actionContainer'>
             {this.state.karaokeList.length > 0 ? (
@@ -272,22 +270,9 @@ export default class Container extends Component {
         <p></p>
         <p></p>
 
-        <div id='left'>
-        <h4>Upcoming Performers:</h4>
-            {karaokeList}
-        </div>
-        
-        <div id='right'>
-            <h4>Submit a Song:</h4>
-                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} onChangeHandler={this.logFieldKeystrokes} />
-            <div id='searchUTube'>
-                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.submitYouTubeSearch} onChangeHandler={this.logFieldKeystrokes} />
-            </div>
-            <div id='results'>
-                {this.state.videos.length > 0 ? 'Results:' : null }
-                {searchResults}
-            </div>
-        </div>
+        <UpcomingPerformersGuest karaokeList={karaokeList} />
+        <SongSearch videos={this.state.videos} searchResults={searchResults} submitKaraokeEntry={this.submitKaraokeEntry} user={this.state.user} logFieldKeystrokes={this.logFieldKeystrokes} searchTerm={this.state.searchTerm} submitYouTubeSearch={this.submitYouTubeSearch} logFieldKeystrokes={this.logFieldKeystrokes} />
+
       </div>
     );
   };

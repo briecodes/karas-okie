@@ -163,8 +163,10 @@ a:hover {
   width: 85%;
 }
 
-.performerFuncContainer button {
+.performerDiv button {
   /* padding: 2px; */
+  display: block;
+  float: left;
 }
 
 @media only all 
