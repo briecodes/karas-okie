@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UUID from 'uuid';
 
 import API_KEY from './token';
-import SubmitForm from './Components/form';
+import SubmitForm from './Components/submitForm';
 import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
@@ -26,7 +26,6 @@ export default class Container extends Component {
             url: '',
             videoId: ''
         },
-        hideUrlInput: false,
         searchTerm: '',
         videos: [],
         karaokeList: []
@@ -74,7 +73,6 @@ export default class Container extends Component {
 
     resetUrlInput = () => {
         this.setState({
-            hideUrlInput: false,
             user: {
                 ...this.state.user,
                 url: ''
@@ -225,7 +223,7 @@ export default class Container extends Component {
         
         <div id='right'>
             <h4>Submit a Song:</h4>
-                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} resetUrlInput={this.resetUrlInput} hide={this.state.hideUrlInput} />
+                <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} url={this.state.user.url} onChangeHandler={this.logFieldKeystrokes} resetUrlInput={this.resetUrlInput} />
             <div id='searchUTube'>
                 < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.searchSubmit} onChangeHandler={this.logSearchFieldKeystrokes} />
             </div>
