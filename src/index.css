@@ -108,6 +108,27 @@ a:hover {
   color: red;
 }
 
+#actionContainer {
+  width: 98%;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+#upNextList {
+  width: 18%;
+  float: right;
+  position: relative;
+  background: fuchsia;
+}
+
+#player {
+  /* 640/390 = 1.64 */
+  width: 80%;
+  height: 390px;
+  float: left;
+  position: relative;
+}
+
 @media only all 
 and (min-device-width : 100px) 
 and (max-device-width : 520px) {

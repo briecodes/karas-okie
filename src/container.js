@@ -29,7 +29,7 @@ export default class Container extends Component {
         searchTerm: '',
         videos: [],
         karaokeList: [],
-        adminMode: false;
+        adminMode: false
     };
 
 
@@ -208,6 +208,18 @@ export default class Container extends Component {
     return (
       <div id='container'>
         <h1 className='title'>Kara's Okie</h1>
+
+        <div id='actionContainer'>
+            {this.state.karaokeList.length > 0 ? (
+                <iframe id='player' type='text/html'
+                src={`http://www.youtube.com/embed/${this.state.karaokeList[0].videoId}`} frameborder='0'></iframe>
+            ) : null }
+            <div id='upNextList'>
+                {karaokeList}
+            </div>
+        </div>
+
+        <div><p></p><p></p><p></p><p></p><p></p><p></p></div>
         <div>Estimated Wait Time: {estimatedTime}</div>
         
         <p></p>
@@ -227,8 +239,6 @@ export default class Container extends Component {
             <div id='results'>
                 {this.state.videos.length > 0 ? 'Results:' : null }
                 {searchResults}
-                {/* <iframe id='player' type='text/html' width='640' height='390'
-                src={`http://www.youtube.com/embed/${this.state.user.videoId}`} frameborder='0'></iframe> */}
             </div>
         </div>
       </div>
