@@ -5,11 +5,10 @@ import API_KEY from './token';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 import Performer from './Components/performer';
-import currentPerformer from './Components/currentPerformer';
+import CurrentPerformer from './Components/currentPerformer';
 import UpcomingPerformersGuest from './Components/upcomingPerformersGuest';
 import SongSearch from './Components/songSearch';
 import AdminHeader from './Components/adminHeader'
-import CurrentPerformer from './Components/currentPerformer';
 
 const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
 
