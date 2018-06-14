@@ -180,7 +180,19 @@ export default class Container extends Component {
             method: 'DELETE'
         });
         e.target.parentNode.remove();
-    }
+    };
+
+    nextPerformer = (e) => {
+        const pList = this.state.karaokeList;
+        pList.shift();
+        this.setState({
+            karaokeList: pList
+        });
+        fetch(API_URL + '/' + e.target.value, {
+            method: 'DELETE'
+        });
+        // e.target.parentNode.remove();
+    };
 
     
     ratio = () => {
@@ -234,7 +246,7 @@ export default class Container extends Component {
     currentPerformer = () => {
         let arr = this.state.karaokeList.map((person, index) => {
             if (index === 0){
-                return <CurrentPerformer person={person} position='1' key={UUID()} clickHanlder={this.deletePerformer} />
+                return <CurrentPerformer person={person} position='1' key={UUID()} clickHanlder={this.nextPerformer} />
             }
         });
         return arr;

@@ -8,11 +8,13 @@ export default class AdminHeader extends Component {
                     <iframe id='player' type='text/html'
                     src={`http://www.youtube.com/embed/${this.props.karaokeList[0].videoId}`} frameBorder='0'></iframe>
                 ) : null }
+
                 <div id='upNextList'>
                     <div id='currentPerformer'>
                         UP NOW:
                         {this.props.currentPerformer}
                     </div>
+
                     {this.props.performerList}
                 </div>
             </div>
