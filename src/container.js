@@ -29,35 +29,18 @@ export default class Container extends Component {
         searchTerm: '',
         videos: [],
         karaokeList: []
-    }
+    };
 
-    
+
 
     // DEFAULT APP / LIFECYCLE FUNCTIONS
 
     componentDidMount(){
         this.fetchPerformerList();
-    }
+    };
     
     estimatedTime = () => {
         return this.state.karaokeList.length * 4;
-    }
-
-
-    
-
-    
-    // USER ACTIONS
-
-    submitKaraokeEntry = (e) => {
-        e.preventDefault();
-        if (this.state.user.name && this.state.user.url && this.state.user.artistName){
-            this.setState({
-                karaokeList: [...this.state.karaokeList, this.state.user]
-            });
-            this.postPerformer();
-            e.target.reset();
-        };
     };
 
     resetAppState = () => {
@@ -72,7 +55,14 @@ export default class Container extends Component {
                 videoId: ''
             }
         });
-    }
+    };
+
+
+    
+
+
+    
+    // USER ACTIONS
 
     logFieldKeystrokes = (e) => {
         if (e.target.name === 'name'){
@@ -110,7 +100,7 @@ export default class Container extends Component {
         };
     };
 
-    searchSubmit = (e) => {
+    submitYouTubeSearch = (e) => {
         e.preventDefault();
         this.searchYouTube();
         e.target.reset();
@@ -124,6 +114,17 @@ export default class Container extends Component {
                 videoId: e.target.dataset.videoid
             }
         });
+    };
+
+    submitKaraokeEntry = (e) => {
+        e.preventDefault();
+        if (this.state.user.name && this.state.user.url && this.state.user.artistName){
+            this.setState({
+                karaokeList: [...this.state.karaokeList, this.state.user]
+            });
+            this.postPerformer();
+            e.target.reset();
+        };
     };
 
 
@@ -197,7 +198,7 @@ export default class Container extends Component {
             return <Person person={person} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
         });
         return arr;
-    }
+    };
 
   render() {
     const searchResults = this.renderVideoSearchResults();
@@ -220,7 +221,7 @@ export default class Container extends Component {
             <h4>Submit a Song:</h4>
                 <SubmitForm onSubmit={this.submitKaraokeEntry} user={this.state.user} onChangeHandler={this.logFieldKeystrokes} />
             <div id='searchUTube'>
-                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.searchSubmit} onChangeHandler={this.logFieldKeystrokes} />
+                < UTubeForm name='searchTerm' value={this.state.searchTerm} onSubmit={this.submitYouTubeSearch} onChangeHandler={this.logFieldKeystrokes} />
             </div>
             <div id='results'>
                 {this.state.videos.length > 0 ? 'Results:' : null }
