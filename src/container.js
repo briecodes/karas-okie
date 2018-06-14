@@ -11,6 +11,42 @@ import SongSearch from './Components/songSearch';
 import AdminHeader from './Components/adminHeader'
 
 const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
+const SEED = [{
+        name: 'MIKE HARRIS',
+        artistName: 'TLSP',
+        songTitle: 'Aviation',
+        url: 'https://www.youtube.com/watch?v=Fd1Xc6-6VVg',
+        videoId: 'Fd1Xc6-6VVg'
+    },
+    {
+        name: 'Vikrum',
+        artistName: 'Saul Williams',
+        songTitle: 'Burundi',
+        url: 'https://www.youtube.com/watch?v=BeFm3Oda5hw',
+        videoId: 'BeFm3Oda5hw'
+    },
+    {
+        name: 'El Stungun',
+        artistName: 'Yeah Yeah Yeahs',
+        songTitle: 'Maps',
+        url: 'https://www.youtube.com/watch?v=oIIxlgcuQRU',
+        videoId: 'oIIxlgcuQRU'
+    },
+    {
+        name: 'Shun',
+        artistName: 'Nas',
+        songTitle: 'NY State of Mind',
+        url: 'https://www.youtube.com/watch?v=hI8A14Qcv68',
+        videoId: 'hI8A14Qcv68'
+    },
+    {
+        name: 'Not Shun',
+        artistName: 'Yasiin Bey',
+        songTitle: 'Ms Fat Booty',
+        url: 'https://www.youtube.com/watch?v=B-y-lS0YqF0',
+        videoId: 'B-y-lS0YqF0'
+    }
+]
 
 let search = require('youtube-search');
 let opts = {
@@ -61,6 +97,18 @@ export default class Container extends Component {
             }
         });
     };
+
+    seedApp = () => {
+        for (const person of SEED){
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(person),
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then( res => res.json() )
+            .then( response => console.log('success:', response ));
+        }
+    }
 
 
     
@@ -265,7 +313,7 @@ export default class Container extends Component {
         { this.state.adminMode ? <AdminHeader karaokeList={this.state.karaokeList} currentPerformer={currentPerformer} performerList={performerList} /> : null }
 
         <div><p></p><p></p><p></p><p></p><p></p><p></p></div>
-        <div>Estimated Wait Time: {estimatedTime}</div>
+        <div onClick={this.seedApp}>Estimated Wait Time: {estimatedTime}</div>
         <p></p>
         <p></p>
         
