@@ -1,9 +1,15 @@
 import React from 'react';
 
 const Performer = (props) => (  
-    <div className="personDiv">
-      <span className='personName'>{props.person.name}</span> {props.position} &nbsp;&nbsp;|&nbsp;&nbsp; <button value={props.person.id} onClick={props.clickHanlder}>X</button><br />
-    Performing {props.person.artistName}'s {props.person.url ? <em><a href={props.person.url} target='_blank'>{props.person.songTitle}</a></em> : <em>{props.person.songTitle}</em>}
+    <div className='performerDiv'>
+        <div className='performerFuncContainer'>
+            <button value={props.person.id} onClick={props.clickHanlder}>X</button>
+        </div>
+        <div className='inlineFloatR'>
+            {props.person.name} &nbsp;&nbsp;|&nbsp;&nbsp; {props.position}<br />
+            Performing {props.person.artistName}'s {props.person.url ? <em><a href={props.person.url} target='_blank'>{props.person.songTitle}</a></em> : <em>{props.person.songTitle}</em>}
+        </div>
+        <div className='divider'></div>
     </div>
 );
 

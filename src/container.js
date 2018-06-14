@@ -6,6 +6,7 @@ import SubmitForm from './Components/submitForm';
 import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
+import Performer from './Components/performer';
 
 const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
 
@@ -189,6 +190,14 @@ export default class Container extends Component {
             document.getElementById('player').style.width = height + 'px';
         }
     }
+
+    switchMode = () => {
+        this.setState({
+            adminMode: !this.state.adminMode
+        })
+    }
+
+
     
     
     // RENDER METHODS
@@ -213,8 +222,8 @@ export default class Container extends Component {
     	let arr = this.state.karaokeList.map((person, index) => {
             if (index !== 0){
                 const estTime = index * 4;
-                const position = 'in: ' + estTime + 'mins';
-                return <Person person={person} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
+                const position = index !== 1 ? 'In: ' + estTime + 'mins' : 'Up Next';
+                return <Performer person={person} position={position} key={UUID()} clickHanlder={this.deletePerformer} />
             }
         });
         return arr;
@@ -237,20 +246,25 @@ export default class Container extends Component {
     const estimatedTime = this.estimatedTime();
     return (
       <div id='container'>
-        <h1 className='title'>Kara's Okie</h1>
+        <h1 className='title' onClick={this.switchMode}>Kara's Okie</h1>
 
-        <div id='actionContainer'>
+        { this.state.adminMode ? 'Admin Mode: ON' : 'Admin Mode: OFF'}
+
+        { this.state.adminMode ? (
+            <div id='actionContainer'>
             {this.state.karaokeList.length > 0 ? (
                 <iframe id='player' type='text/html'
                 src={`http://www.youtube.com/embed/${this.state.karaokeList[0].videoId}`} frameBorder='0'></iframe>
             ) : null }
             <div id='upNextList'>
                 <div id='currentPerformer'>
+                    UP NOW:
                     {currentPerformer}
                 </div>
                 {performerList}
             </div>
         </div>
+         ) : 'Admin Mode: OFF'}
 
         <div><p></p><p></p><p></p><p></p><p></p><p></p></div>
         <div>Estimated Wait Time: {estimatedTime}</div>
