@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import UUID from 'uuid';
 
 import API_KEY from './token';
-import SubmitForm from './Components/submitForm';
-import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 import Performer from './Components/performer';
+import currentPerformer from './Components/currentPerformer';
 import UpcomingPerformersGuest from './Components/upcomingPerformersGuest';
 import SongSearch from './Components/songSearch';
+import AdminHeader from './Components/adminHeader'
+import CurrentPerformer from './Components/currentPerformer';
 
 const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
 
@@ -41,6 +42,7 @@ export default class Container extends Component {
 
     componentDidMount(){
         this.fetchPerformerList();
+        // const fetchInterval = window.setInterval(this.fetchPerformerList, 5000);
     };
     
     estimatedTime = () => {
@@ -155,6 +157,7 @@ export default class Container extends Component {
     };
 
     fetchPerformerList = () => {
+        console.log("fetching...");
         fetch(API_URL).then( response => response.json() ).then(array => {
             this.setState({
                 karaokeList: array
@@ -232,7 +235,7 @@ export default class Container extends Component {
     currentPerformer = () => {
         let arr = this.state.karaokeList.map((person, index) => {
             if (index === 0){
-                return <Person person={person} position='1' key={UUID()} clickHanlder={this.deletePerformer} />
+                return <CurrentPerformer person={person} position='1' key={UUID()} clickHanlder={this.deletePerformer} />
             }
         });
         return arr;
@@ -248,30 +251,15 @@ export default class Container extends Component {
       <div id='container'>
         <h1 className='title' onClick={this.switchMode}>Kara's Okie</h1>
 
-        { this.state.adminMode ? (
-            <div id='actionContainer'>
-            {this.state.karaokeList.length > 0 ? (
-                <iframe id='player' type='text/html'
-                src={`http://www.youtube.com/embed/${this.state.karaokeList[0].videoId}`} frameBorder='0'></iframe>
-            ) : null }
-            <div id='upNextList'>
-                <div id='currentPerformer'>
-                    UP NOW:
-                    {currentPerformer}
-                </div>
-                {performerList}
-            </div>
-        </div>
-         ) : 'Admin Mode: OFF'}
+        { this.state.adminMode ? <AdminHeader karaokeList={this.state.karaokeList} currentPerformer={currentPerformer} performerList={performerList} /> : null }
 
         <div><p></p><p></p><p></p><p></p><p></p><p></p></div>
         <div>Estimated Wait Time: {estimatedTime}</div>
+        <p></p>
+        <p></p>
         
-        <p></p>
-        <p></p>
-
-        <UpcomingPerformersGuest karaokeList={karaokeList} />
-        <SongSearch videos={this.state.videos} searchResults={searchResults} submitKaraokeEntry={this.submitKaraokeEntry} user={this.state.user} logFieldKeystrokes={this.logFieldKeystrokes} searchTerm={this.state.searchTerm} submitYouTubeSearch={this.submitYouTubeSearch} logFieldKeystrokes={this.logFieldKeystrokes} />
+        {this.state.adminMode ? null : <UpcomingPerformersGuest karaokeList={karaokeList} /> }
+        {this.state.adminMode ? null : <SongSearch videos={this.state.videos} searchResults={searchResults} submitKaraokeEntry={this.submitKaraokeEntry} user={this.state.user} logFieldKeystrokes={this.logFieldKeystrokes} searchTerm={this.state.searchTerm} submitYouTubeSearch={this.submitYouTubeSearch} logFieldKeystrokes={this.logFieldKeystrokes} /> }
 
       </div>
     );
