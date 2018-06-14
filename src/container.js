@@ -7,6 +7,8 @@ import UTubeForm from './Components/uTubeForm';
 import TubeResult from './Components/tubeResult';
 import Person from './Components/person';
 
+const API_URL = 'https://karaoke-api.herokuapp.com/api/v1/users';
+
 let search = require('youtube-search');
 let opts = {
     maxResults: 10,
@@ -52,7 +54,7 @@ export default class Container extends Component {
             });
             this.postPerformer();
             e.target.reset();
-            this.resetAppState();
+            // this.resetAppState();
         };
     };
 
@@ -158,7 +160,7 @@ export default class Container extends Component {
     };
 
     getKaraokeList = () => {
-        fetch('http://localhost:3000/api/v1/users').then( response => response.json() ).then(array => {
+        fetch(API_URL).then( response => response.json() ).then(array => {
             this.setState({
                 karaokeList: array
             });
@@ -166,17 +168,18 @@ export default class Container extends Component {
     };
 
     postPerformer = () => {
-        fetch('http://localhost:3000/api/v1/users', {
+        fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify(this.state.user),
             headers: {'Content-Type': 'application/json'}
         })
         .then( res => res.json() )
-        .then( response => console.log('success:', response ));
+        .then( response => console.log('success:', response ))
+        .then(this.resetAppState());
     };
 
     deletePerformer = (e) => {
-        fetch('http://localhost:3000/api/v1/users/' + e.target.value, {
+        fetch(API_URL + '/' + e.target.value, {
             method: 'DELETE'
         })
         .then( res => res.json() )
