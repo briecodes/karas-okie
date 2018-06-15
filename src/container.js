@@ -312,7 +312,7 @@ export default class Container extends Component {
     const estimatedTime = this.estimatedTime();
     return (
       <div id='container'>
-        <h1 className='title' onClick={this.switchMode}>Kara's Okie</h1>
+        <h1 className='title'>Kara's Oki<span onClick={this.switchMode} >e</span></h1>
 
         { this.state.adminMode ? <AdminHeader karaokeList={this.state.karaokeList} currentPerformer={currentPerformer} performerList={performerList} /> : null }
         <div className='divider'></div>
