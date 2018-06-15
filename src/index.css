@@ -116,8 +116,8 @@ a:hover {
 
 #upNextList {
   width: 23%;
-  height: 390px;
-  max-height: 390px;
+  height: 530px;
+  height: 530px;
   float: right;
   position: relative;
   /* background: #f4f4f4; */
@@ -127,7 +127,7 @@ a:hover {
 #player {
   /* 640/390 = 1.64 OR .6 */
   width: 76%;
-  height: 390px;
+  height: 530px;
   float: left;
   position: relative;
 }
@@ -167,6 +167,12 @@ a:hover {
   /* padding: 2px; */
   display: block;
   float: left;
+}
+
+.est {
+  width: 100%;
+  clear: both;
+  margin-top: 25px;
 }
 
 @media only all 

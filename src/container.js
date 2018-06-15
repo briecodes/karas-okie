@@ -315,11 +315,9 @@ export default class Container extends Component {
         <h1 className='title' onClick={this.switchMode}>Kara's Okie</h1>
 
         { this.state.adminMode ? <AdminHeader karaokeList={this.state.karaokeList} currentPerformer={currentPerformer} performerList={performerList} /> : null }
-
-        <div><p></p><p></p><p></p><p></p><p></p><p></p></div>
-        <div onClick={this.seedApp}>Estimated Wait Time: {estimatedTime}</div>
-        <p></p>
-        <p></p>
+        <div className='divider'></div>
+        <div className='est' onClick={this.seedApp}>Estimated Wait Time: {estimatedTime}</div>
+        <div className='divider'></div>
         
         {this.state.adminMode ? null : <UpcomingPerformersGuest karaokeList={karaokeList} /> }
         {this.state.adminMode ? null : <SongSearch videos={this.state.videos} searchResults={searchResults} submitKaraokeEntry={this.submitKaraokeEntry} user={this.state.user} logFieldKeystrokes={this.logFieldKeystrokes} searchTerm={this.state.searchTerm} submitYouTubeSearch={this.submitYouTubeSearch} logFieldKeystrokes={this.logFieldKeystrokes} /> }
