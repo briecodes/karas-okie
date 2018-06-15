@@ -77,7 +77,7 @@ export default class Container extends Component {
 
     componentDidMount(){
         this.fetchPerformerList();
-        // const fetchInterval = window.setInterval(this.fetchPerformerList, 5000);
+        // const fetchInterval = window.setInterval(this.fetchPerformerList, 1000);
     };
     
     estimatedTime = () => {
@@ -224,10 +224,10 @@ export default class Container extends Component {
     };
 
     deletePerformer = (e) => {
+        // e.target.parentNode.remove();
         fetch(API_URL + '/' + e.target.value, {
             method: 'DELETE'
         });
-        e.target.parentNode.remove();
     };
 
     nextPerformer = (e) => {
