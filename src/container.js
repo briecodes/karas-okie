@@ -77,8 +77,12 @@ export default class Container extends Component {
 
     componentDidMount(){
         this.fetchPerformerList();
-        // const fetchInterval = window.setInterval(this.fetchPerformerList, 1000);
+        const fetchInterval = window.setInterval(this.fetchPerformerList, 1000);
     };
+
+    componentWillUnmount() {
+        clearInterval(this.fetchInterval);
+    }
     
     estimatedTime = () => {
         return this.state.karaokeList.length * 4;
